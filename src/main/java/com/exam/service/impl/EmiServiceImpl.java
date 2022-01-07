@@ -47,7 +47,7 @@ public class EmiServiceImpl implements EmiService {
 				emi1 = this.emiRepository.save(emi);
 			//}
 		} catch (Exception e) {
-			System.out.println("Inside addEmi() in EmiServiceImpl at line no 40: " + e.getMessage());
+			System.out.println("Inside addEmi() in EmiServiceImpl at line no 50: " + e.getMessage());
 		}
 		return emi1;
 	}
