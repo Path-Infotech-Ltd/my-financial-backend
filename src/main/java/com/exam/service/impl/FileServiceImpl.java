@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -77,7 +78,7 @@ public class FileServiceImpl implements FileService {
 					StatusConstant.STATUS_ACTIVE);
 			LOGGER.info("jobMaster Record: " + jobMasterDetails.toString());
 
-			if (null == jobMasterDetails) {
+			if (Objects.isNull(jobMasterDetails)) {
 				LOGGER.error(ExceptionConstant.JOB_NOT_FOUND_ED);
 				System.out.println(ExceptionConstant.JOB_NOT_FOUND_ED);
 				fileResponse.setFileName(multipartFile.getOriginalFilename());
@@ -350,6 +351,7 @@ public class FileServiceImpl implements FileService {
 		FileLog fileLog = fileLogRepository.findById(fileLogId).get();
 
 		FileLog fileLogDetails = new FileLog();
+		if(Objects.nonNull(fileLog))
 		fileLogDetails.setId(fileLog.getId());
 
 		FileUploadDetails fileUploadDetails = new FileUploadDetails();
