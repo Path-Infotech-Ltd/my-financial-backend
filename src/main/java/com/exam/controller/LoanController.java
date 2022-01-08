@@ -35,14 +35,11 @@ public class LoanController {
 	private LoanService loanService;
 
 //	 ADD LOAN
-//	@PostMapping("/")
-//	public ResponseEntity<?> addloan(@RequestBody Loan loan) {
-//
-//		Loan loan1 = this.loanService.addLoan(loan);
-//		loan1.setModifiedDate(null);
-//		return ResponseEntity.ok(loan1);
-//
-//	}
+	@GetMapping("/testMsg")
+	public String testApi() {
+		return "This is a Testing API";
+
+	}
 	
 //	@RequestMapping(value = "/", method = RequestMethod.POST)
 //	@ResponseBody
