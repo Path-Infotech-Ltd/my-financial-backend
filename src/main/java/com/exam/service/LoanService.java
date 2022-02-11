@@ -19,6 +19,8 @@ public interface LoanService {
 	
 	public Set<Loan> getAllLoans();
 	
+	public Set<Loan> getAllActiveLoans();
+	
 	public Loan getLoan(Long loanId) ;
 	
 	public void deleteLoan(Long loanId);

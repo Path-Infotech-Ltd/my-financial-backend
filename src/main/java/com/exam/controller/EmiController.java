@@ -32,7 +32,7 @@ public class EmiController {
 //	 ADD EMI
 	@PostMapping("/")
 	public ResponseEntity<Emi> addEmi(@RequestBody Emi emi) {
-
+		System.out.println("EMI Added");
 		return ResponseEntity.ok(this.emiService.addEmi(emi));
 
 	}
@@ -42,7 +42,9 @@ public class EmiController {
 	public ResponseEntity<Emi> updateEmi(@RequestBody Emi emi) {
 		if (emi.getCreatedDate() == null) {
 			emi.setCreatedDate(LocalDateTime.now());
+			
 		}
+		System.out.println("EMI Updated");
 		return ResponseEntity.ok(this.emiService.updateEmi(emi));
 
 	}

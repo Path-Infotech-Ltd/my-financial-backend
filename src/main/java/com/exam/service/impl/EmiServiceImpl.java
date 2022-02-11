@@ -44,8 +44,12 @@ public class EmiServiceImpl implements EmiService {
 				emi.setCreatedBy("sunilkumar5775");
 				emi.setCreatedDate(LocalDateTime.now());
 				emi.setNoOfPayment(loan.getEmiPaid());
+				
 				emi1 = this.emiRepository.save(emi);
-			//}
+				if(loan.getTotalEmi()==emi.getNoOfPayment()) {
+				loan.setStatus(StatusConstant.STATUS_CLOSED);
+				this.loanRepository.save(loan);
+			}
 		} catch (Exception e) {
 			System.out.println("Inside addEmi() in EmiServiceImpl at line no 50: " + e.getMessage());
 		}
@@ -77,7 +81,8 @@ public class EmiServiceImpl implements EmiService {
 	public Emi updateEmi(Emi emi) {
 		emi.setModifiedBy(emi.getCreatedBy());
 		emi.setModifiedDate(null);
-		return this.emiRepository.save(emi);
+		
+		return null;// this.emiRepository.save(emi);
 	}
 
 	@Override

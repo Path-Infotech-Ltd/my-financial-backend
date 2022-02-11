@@ -129,6 +129,12 @@ public class LoanServiceImpl implements LoanService {
 	public Set<Loan> getAllLoans() {
 		return new LinkedHashSet<>(this.loanRepository.findByStatus(StatusConstant.STATUS_ACTIVE));
 	}
+	
+	@Override
+	public Set<Loan> getAllActiveLoans() {
+		return new LinkedHashSet<>(this.loanRepository.findByStatus(StatusConstant.STATUS_ACTIVE));
+	}
+
 
 	@Override
 	public Loan getLoan(Long loanId) {
@@ -144,4 +150,5 @@ public class LoanServiceImpl implements LoanService {
 
 	}
 
+	
 }

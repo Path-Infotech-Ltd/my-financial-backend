@@ -26,6 +26,7 @@ public interface StatusConstant {
 	public static final String STATUS_PAID = "PAID";
 	public static final String STATUS_UNPAID = "UNPAID";
 	public static final String STATUS_UNKNOWN = "UNKNOWN";
+	public static final String STATUS_CLOSED = "CLOSED";
 	
 	
 

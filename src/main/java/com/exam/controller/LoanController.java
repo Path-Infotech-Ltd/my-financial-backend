@@ -66,6 +66,12 @@ public class LoanController {
 	public Set<Loan> getAllLoans() {
 		return new HashSet<>(this.loanService.getAllLoans());
 	}
+	
+//	 GET ALL LOANS
+	@GetMapping("/active")
+	public Set<Loan> getAllActiveLoans() {
+		return new HashSet<>(this.loanService.getAllActiveLoans());
+	}
 
 //	 GET LOAN BY ID
 	@GetMapping("/{loanId}")
