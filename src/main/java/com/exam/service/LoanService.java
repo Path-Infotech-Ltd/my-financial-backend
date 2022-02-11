@@ -12,6 +12,7 @@ import com.exam.model.Loan;
 
 @Service
 public interface LoanService {
+	
 
 	public LoanResponse addNewLoan(LoanRequest loanRequest) throws UnsupportedOperationException, URISyntaxException, IOException ;
 	

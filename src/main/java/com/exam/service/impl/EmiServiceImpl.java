@@ -54,6 +54,7 @@ public class EmiServiceImpl implements EmiService {
 			System.out.println("Inside addEmi() in EmiServiceImpl at line no 50: " + e.getMessage());
 		}
 		return emi1;
+		
 	}
 
 	private boolean updateLoanCounter(Loan loanDetails, Emi emi) {

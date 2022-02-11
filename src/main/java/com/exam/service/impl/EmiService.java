@@ -11,6 +11,7 @@ import com.exam.model.Loan;
 @Service
 public interface EmiService {
 	
+	
 	public Emi addEmi(Emi emi);
 	
 	public Emi updateEmi(Emi emi);

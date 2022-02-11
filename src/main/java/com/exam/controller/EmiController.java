@@ -25,6 +25,7 @@ import com.exam.service.impl.EmiService;
 @RequestMapping("/emi")
 @CrossOrigin("*")
 public class EmiController {
+	
 
 	@Autowired
 	private EmiService emiService;

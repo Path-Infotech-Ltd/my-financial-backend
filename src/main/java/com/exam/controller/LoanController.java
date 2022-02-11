@@ -67,6 +67,8 @@ public class LoanController {
 		return new HashSet<>(this.loanService.getAllLoans());
 	}
 	
+	
+	
 //	 GET ALL LOANS
 	@GetMapping("/active")
 	public Set<Loan> getAllActiveLoans() {

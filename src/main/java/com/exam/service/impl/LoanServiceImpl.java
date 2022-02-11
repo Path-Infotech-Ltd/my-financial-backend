@@ -130,6 +130,7 @@ public class LoanServiceImpl implements LoanService {
 		return new LinkedHashSet<>(this.loanRepository.findByStatus(StatusConstant.STATUS_ACTIVE));
 	}
 	
+	
 	@Override
 	public Set<Loan> getAllActiveLoans() {
 		return new LinkedHashSet<>(this.loanRepository.findByStatus(StatusConstant.STATUS_ACTIVE));
