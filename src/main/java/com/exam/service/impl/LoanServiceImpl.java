@@ -8,15 +8,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.exam.constant.ExceptionConstant;
 import com.exam.constant.StatusConstant;
-import com.exam.dto.FileRequest;
 import com.exam.dto.LoanRequest;
 import com.exam.dto.LoanResponse;
 import com.exam.model.Loan;
-import com.exam.repository.EmiRepository;
 import com.exam.repository.LoanRepository;
 import com.exam.service.LoanService;
 
@@ -71,6 +70,10 @@ public class LoanServiceImpl implements LoanService {
 				loan.setLogoName("kotak_logo.png");
 				break;
 			
+			case "32":
+				loan.setLogoName("SBI-Logo.png");
+				break;
+				
 			case "35":
 				loan.setLogoName("bajaj_logo.png");
 				break;
@@ -78,6 +81,12 @@ public class LoanServiceImpl implements LoanService {
 			case "36":
 				loan.setLogoName("personal_logo.jpg");
 				break;
+				
+			case "37":
+				loan.setLogoName("ZestLogo.png");
+				break;
+				
+		
 
 			default:
 				loan.setLogoName("marc.jpg");
@@ -127,7 +136,7 @@ public class LoanServiceImpl implements LoanService {
 
 	@Override
 	public Set<Loan> getAllLoans() {
-		return new LinkedHashSet<>(this.loanRepository.findByStatus(StatusConstant.STATUS_ACTIVE));
+		return new LinkedHashSet<>(this.loanRepository.findAllByOrderByStatusAsc());
 	}
 	
 	
