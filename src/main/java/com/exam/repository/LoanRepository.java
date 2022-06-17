@@ -17,6 +17,6 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
 
 	Set<Loan> findAllByOrderByStatusAsc();
 
-	Set<Loan> findByOrderByStatusAsc();
+	Set<Loan> findByOrderByStatusAsc(); 
 
 }

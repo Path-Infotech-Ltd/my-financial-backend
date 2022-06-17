@@ -163,7 +163,6 @@ public class LoanServiceImpl implements LoanService {
 		} else {
 			return new LinkedHashSet<>(this.loanRepository.findByStatus(loanStatus));
 		}
-
 	}
 
 }

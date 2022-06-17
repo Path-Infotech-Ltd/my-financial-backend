@@ -92,7 +92,6 @@ public class LoanController {
 	@DeleteMapping("/{loanId}")
 	public void deleteCategory(@PathVariable Long loanId) {
 		this.loanService.deleteLoan(loanId);
-
 	}
 
 }
