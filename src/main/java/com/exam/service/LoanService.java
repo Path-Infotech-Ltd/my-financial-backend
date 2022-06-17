@@ -25,4 +25,6 @@ public interface LoanService {
 	public Loan getLoan(Long loanId) ;
 	
 	public void deleteLoan(Long loanId);
+
+	public Set<Loan> getLoansByStatus(String loanStatus);
 }

@@ -69,11 +69,11 @@ public class LoanServiceImpl implements LoanService {
 			case "15":
 				loan.setLogoName("kotak_logo.png");
 				break;
-			
+
 			case "32":
 				loan.setLogoName("SBI-Logo.png");
 				break;
-				
+
 			case "35":
 				loan.setLogoName("bajaj_logo.png");
 				break;
@@ -81,12 +81,10 @@ public class LoanServiceImpl implements LoanService {
 			case "36":
 				loan.setLogoName("personal_logo.jpg");
 				break;
-				
+
 			case "37":
 				loan.setLogoName("ZestLogo.png");
 				break;
-				
-		
 
 			default:
 				loan.setLogoName("marc.jpg");
@@ -138,13 +136,11 @@ public class LoanServiceImpl implements LoanService {
 	public Set<Loan> getAllLoans() {
 		return new LinkedHashSet<>(this.loanRepository.findAllByOrderByStatusAsc());
 	}
-	
-	
+
 	@Override
 	public Set<Loan> getAllActiveLoans() {
 		return new LinkedHashSet<>(this.loanRepository.findByStatus(StatusConstant.STATUS_ACTIVE));
 	}
-
 
 	@Override
 	public Loan getLoan(Long loanId) {
@@ -160,5 +156,14 @@ public class LoanServiceImpl implements LoanService {
 
 	}
 
-	
+	@Override
+	public Set<Loan> getLoansByStatus(String loanStatus) {
+		if ("ALL".equalsIgnoreCase(loanStatus)) {
+			return new LinkedHashSet<>(this.loanRepository.findAllByOrderByStatusAsc());
+		} else {
+			return new LinkedHashSet<>(this.loanRepository.findByStatus(loanStatus));
+		}
+
+	}
+
 }

@@ -75,6 +75,12 @@ public class LoanController {
 		return new HashSet<>(this.loanService.getAllActiveLoans());
 	}
 
+//	 GET LOANS BY STATUS
+	@GetMapping("/status/{loanStatus}")
+	public Set<Loan> getLoansByStatus(@PathVariable String loanStatus) {
+		return new HashSet<>(this.loanService.getLoansByStatus(loanStatus));
+	}
+
 //	 GET LOAN BY ID
 	@GetMapping("/{loanId}")
 	public Loan getLoan(@PathVariable Long loanId) {
