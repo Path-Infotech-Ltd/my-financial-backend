@@ -27,7 +27,7 @@
 		<start-class>com.exam.MyFinancialApplication</start-class>
 	</properties>
 	
-	<!-- Coverage tools plugins added -->
+	<!-- Coverage tools plugins added in pom file -->
 	<reporting>
 		<plugins>
 			<plugin>
