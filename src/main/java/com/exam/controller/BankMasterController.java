@@ -1,7 +1,5 @@
 package com.exam.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,11 +11,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.exam.model.BankMaster;
-import com.exam.model.Category;
-import com.exam.model.Emi;
 import com.exam.service.BankMasterService;
 
 @RestController
@@ -29,10 +26,9 @@ public class BankMasterController {
 	@Autowired
 	private BankMasterService bankMasterService;
 
-
 //	 GET ALL CATEGORIES
 	@GetMapping("/")
-	public Set<BankMaster> getCategories() {
+	public Set<BankMaster> getAllBanks() {
 		return new HashSet<>(this.bankMasterService.getAllBanks());
 
 	}
@@ -50,15 +46,10 @@ public class BankMasterController {
 		this.bankMasterService.deleteBank(bankId);
 
 	}
-	
-	@GetMapping("/{direction}")
-//	public List<Category> getByDescription(@PathVariable String direction){
-	public String getByDescription(@PathVariable String direction){
-		System.out.println("Inside getByDescription in Question controller");
-		List<Category> list = new ArrayList<>();
-		list.add(new Category("Sample Category", "This is a sample category", LocalDateTime.now(), "sunilkmr5775"));
-		return "direction";
-		//return this.categoryService.findAllByDescription(direction);
+
+	@GetMapping("/sort")
+	public List<BankMaster> sortByBankName(@RequestParam String direction) {
+		return this.bankMasterService.sortByBankName(direction);
 	}
 
 }

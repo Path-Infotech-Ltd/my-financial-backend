@@ -93,7 +93,7 @@ public class EmiServiceImpl implements EmiService {
 
 	@Override
 	public Emi getEmi(Long emiId) {
-		Emi emi = this.emiRepository.findById(emiId).get();
+		Emi emi = this.emiRepository.findAllByEid(emiId);
 		return emi;
 	}
 
