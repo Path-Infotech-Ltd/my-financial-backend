@@ -22,7 +22,7 @@ import com.exam.repository.LoanRepository;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-class ExamserverApplicationTests {
+class MyFinancialApplicationTests {
 
 	@Autowired
 	LoanRepository loanRepository;
@@ -73,17 +73,17 @@ class ExamserverApplicationTests {
 	@Test
 	@Order(3)
 	public void testRead() {
-		Loan loan = loanRepository.findById(1540L).get();
-		Assertions.assertEquals(123456789L, Long.parseLong(loan.getLoanNo()));
+		Loan loan = loanRepository.findById(1516L).get();
+		Assertions.assertEquals("PHR063604725475", loan.getLoanNo());
 	}
 
 	@Test
 	@Order(4)
 	public void testUpdate() {
-		Loan p = loanRepository.findById(1540L).get();
-		p.setLoanAmount(new BigDecimal("600000.00"));
+		Loan p = loanRepository.findById(1553L).get();
+		p.setLoanNo("RENT-ECO-VILL2-2022-23");
 		loanRepository.save(p);
-		Assertions.assertNotEquals(new Double(500000.00), loanRepository.findById(1540L).get().getLoanAmount());
+		Assertions.assertNotEquals("RENT-ECO-VILL2-2022-25", loanRepository.findById(1553L).get().getLoanNo());
 	}
 
 //	@Test

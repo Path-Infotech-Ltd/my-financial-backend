@@ -30,6 +30,7 @@ import com.exam.service.JwtUserDetailsService;
 @RestController
 @Component
 @CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class JwtAuthenticationRestController {
 
 	@Value("${jwt.http.request.header}")

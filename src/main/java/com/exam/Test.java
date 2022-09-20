@@ -1,14 +1,23 @@
 package com.exam;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 
+import com.exam.model.BankMaster;
+import com.exam.repository.BankMasterRepository;
 import com.exam.repository.FileTypeRuleAttributeRepository;
 
 public class Test {
+
+	@Autowired
+	static BankMasterRepository bankMasterRepository;
+
 	@Autowired
 	static FileTypeRuleAttributeRepository fileTypeRuleAttributeRepository;
+
 	public static void main(String[] args) {
 
 		String fileHeader1 = "﻿SNO,TITLE,DESCRIPTION,MAX_MARKS,NO_OF_QUESTIONS,PUBLISHED,CATEGORY";
@@ -16,23 +25,25 @@ public class Test {
 //		boolean flag = compareStrings(fileHeader1, fileHeader2);
 
 //		System.out.println("Checking Header Validation : " +flag);
-		
+
 		String[] v1 = fileHeader1.split(",");
 		String[] v2 = fileHeader2.split(",");
 		Arrays.sort(v1);
 		Arrays.sort(v2);
-		System.out.println(Arrays.equals(v1, v2));
+		// System.out.println(Arrays.equals(v1, v2));
 
-		
 	}
-	 static boolean compareStrings(String s1, String s2) {
-		 boolean f = false;
-			if (s1.equalsIgnoreCase(s2)) {
-				f= true;
-			}else {
-				f=false;
-			}
-			return f;
+
+	static boolean compareStrings(String s1, String s2) {
+		boolean f = false;
+		if (s1.equalsIgnoreCase(s2)) {
+			f = true;
+		} else {
+			f = false;
+		}
+		return f;
 	}
+
+
 
 }

@@ -6,17 +6,20 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import org.springframework.stereotype.Component;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
 @EnableScheduling
-public class MyFinancialApplication extends SpringBootServletInitializer {
+//@Component
+public class MyFinancialApplication extends SpringBootServletInitializer
+{
 
-	@Override
+	/*@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(MyFinancialApplication.class);
-	}
+	}*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyFinancialApplication.class, args);

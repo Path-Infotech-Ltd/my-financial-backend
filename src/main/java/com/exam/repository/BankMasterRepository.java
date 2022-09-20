@@ -12,5 +12,4 @@ public interface BankMasterRepository extends JpaRepository<BankMaster, Long> {
 
 	public Set<BankMaster> findAllByOrderByBankNameAsc();
 
-
 }
