@@ -27,6 +27,7 @@ import com.exam.service.UserService;
 @Component
 @RequestMapping("/user")
 @CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
 	@Autowired
