@@ -1,8 +1,7 @@
 package com.exam.service.impl;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -19,8 +18,9 @@ public class BankMasterServiceImpl implements BankMasterService {
 	private BankMasterRepository bankMasterRepository;
 
 	@Override
-	public Set<BankMaster> getAllBanks() {
-		return new LinkedHashSet<>(this.bankMasterRepository.findAllByOrderByBankNameAsc());
+	public List<BankMaster> getAllBanks() {
+//		return new ArrayList<>(this.bankMasterRepository.findAllByOrderByBankNameAsc());
+		return new ArrayList<>(bankMasterRepository.findAll(Sort.by(Sort.Direction.ASC, "bankName")));
 	}
 
 	@Override

@@ -1,8 +1,7 @@
 package com.exam.controller;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ import com.exam.service.BankMasterService;
 
 @RestController
 @Component
-@RequestMapping("/bank")
+@RequestMapping("/banks")
 @CrossOrigin("*")
 public class BankMasterController {
 
@@ -28,8 +27,8 @@ public class BankMasterController {
 
 //	 GET ALL CATEGORIES
 	@GetMapping("/")
-	public Set<BankMaster> getAllBanks() {
-		return new HashSet<>(this.bankMasterService.getAllBanks());
+	public List<BankMaster> getAllBanks() {
+		return new ArrayList<>(this.bankMasterService.getAllBanks());
 
 	}
 

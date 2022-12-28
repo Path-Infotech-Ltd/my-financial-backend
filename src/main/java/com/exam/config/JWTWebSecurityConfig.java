@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.exam.jwt.JwtAuthenticationEntryPoint;
 import com.exam.jwt.JwtAuthenticationTokenFilter;
@@ -24,7 +25,7 @@ import com.exam.jwt.JwtAuthenticationTokenFilter;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -64,7 +65,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable().exceptionHandling()
+		httpSecurity
+				.cors().and().csrf().disable().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().
 				antMatchers(HTTP_SEC_AUTH_WHITELIST)
@@ -79,7 +81,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private String[] HTTP_SEC_AUTH_WHITELIST = {
 			"/user/**","/quiz/**","/generateToken", "**/loans/testMsg"
-//			,"/user/**"
+			,"/loans/**"
+			,"/banks/**","/emi/**"
 //			,"/current-user/"
 //			,"/category/"
 	};
@@ -107,5 +110,17 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources**",  
             "/v2/api-docs**"
 	};
-
+	
+//	 @Bean
+//	    public FilterRegistrationBean<CorsFilter> corsFilter() {
+//	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//	        CorsConfiguration config = new CorsConfiguration();
+//	        config.addAllowedOrigin("*");
+//	        config.addAllowedHeader("*");
+//	        config.addAllowedMethod("*");
+//	        source.registerCorsConfiguration("/**", config);
+//	        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(source));
+//	        bean.setOrder(0);
+//	        return bean;
+//	    }
 }

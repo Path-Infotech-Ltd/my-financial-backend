@@ -10,7 +10,7 @@ import com.exam.model.BankMaster;
 @Service
 public interface BankMasterService {
 
-	public Set<BankMaster> getAllBanks();
+	public List<BankMaster> getAllBanks();
 
 	public void deleteBank(Long bankId);
 
