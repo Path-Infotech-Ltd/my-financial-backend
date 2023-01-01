@@ -78,11 +78,14 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
 		httpSecurity.headers().frameOptions().sameOrigin() // H2 Console Needs this setting
 				.cacheControl(); // disable caching
 	}
-
 	private String[] HTTP_SEC_AUTH_WHITELIST = {
-			"/user/**","/quiz/**","/generateToken", "**/loans/testMsg"
-			,"/loans/**"
-			,"/banks/**","/emi/**",
+			"/user/**",
+			"/quiz/**",
+			"/generateToken",
+			"**/loans/testMsg",
+			"/loans/**",
+			"/banks/**",
+			"/emi/**",
 			"/life-insurances/**",
 			"/premium-modes/**"
 //			,"/current-user/"
