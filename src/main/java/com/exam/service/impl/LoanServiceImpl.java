@@ -134,7 +134,6 @@ public class LoanServiceImpl implements LoanService {
 		return loanResponse;
 	}
 
-	@Override
 	public Loan updateLoan(Loan loan) {
 		return this.loanRepository.save(loan);
 	}

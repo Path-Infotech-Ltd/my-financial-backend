@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.exam.model.Emi;
 import com.exam.model.Loan;
-import com.exam.service.impl.EmiService;
+import com.exam.service.EmiService;
 
 @RestController
 @Component
