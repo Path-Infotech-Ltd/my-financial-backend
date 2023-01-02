@@ -44,7 +44,6 @@ public class PremiumController {
 	@GetMapping("/")
 	public ResponseEntity<?> getPemiums() {
 		return ResponseEntity.ok(this.premiumService.getPremiums());
-
 	}
 
 //	 GET SINGLE PREMIUMS BY ID
