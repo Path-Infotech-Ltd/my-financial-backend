@@ -4,6 +4,7 @@ public interface StatusConstant {
 	public static final String STATUS_SUCCESS = "SUCCESS";
 	public static final String STATUS_FAILURE = "FAILURE";
 	public static final String STATUS_ACTIVE = "ACTIVE";
+	public static final String STATUS_INACTIVE = "INACTIVE";
 	public static final String STATUS_SUBMITTED = "SUBMITTED";
 	public static final String STATUS_INPROGRESS = "INPROGRESS";
 	public static final String STATUS_COMPLETED = "COMPLETED";

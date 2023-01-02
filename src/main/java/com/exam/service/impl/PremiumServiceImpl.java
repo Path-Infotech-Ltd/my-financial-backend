@@ -1,0 +1,112 @@
+package com.exam.service.impl;
+
+import com.exam.constant.StatusConstant;
+import com.exam.model.Emi;
+import com.exam.model.LifeInsurance;
+import com.exam.model.Loan;
+import com.exam.model.Premiums;
+import com.exam.repository.LifeInsuranceRepository;
+import com.exam.repository.PremiumRepository;
+import com.exam.service.PremiumService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+@Service
+public class PremiumServiceImpl implements PremiumService {
+
+	@Autowired
+	private PremiumRepository premiumRepository;
+
+	@Autowired
+	private LifeInsuranceRepository lifeInsuranceRepository;
+
+	@Override
+	public Premiums addPremium(Premiums premium) {
+		LifeInsurance lifeInsurance = new LifeInsurance();
+		Premiums premium1 = new Premiums();
+		boolean isLoanDetailsUpdated = false;
+		try {
+			lifeInsurance = lifeInsuranceRepository.findByPolicyNo(premium.getPolicyNo());
+			BigDecimal defaultAamount = new BigDecimal("0.00");
+			isLoanDetailsUpdated = updateLoanCounter(lifeInsurance, premium);
+		//	if(isLoanDetailsUpdated) {
+			premium.setLifeInsurance(lifeInsurance);
+			premium.setPremiumAmount(premium.getPremiumAmount());
+			premium.setPremiumDate(premium.getPremiumDate());
+			premium.setStatus(premium.isPremiumStatus()==true?StatusConstant.STATUS_PAID:premium.isPremiumStatus()==false?StatusConstant.STATUS_UNPAID.toString():StatusConstant.STATUS_UNKNOWN);
+			premium.setPremiumStatus(premium.isPremiumStatus());
+			premium.setCreatedBy("sunilkumar5775");
+			premium.setCreatedDate(LocalDateTime.now());
+			premium.setNoOfPayment(lifeInsurance.getPremiumsPaid());
+			premium.setSumAssured(premium.getSumAssured());
+
+			premium1 = this.premiumRepository.save(premium);
+				if(lifeInsurance.getPolicyTerm()*12==premium.getNoOfPayment()) {
+					lifeInsurance.setStatus(false);
+				this.lifeInsuranceRepository.save(lifeInsurance);
+			}
+		} catch (Exception e) {
+			System.out.println("Inside addPremium() in PremiumServiceImpl at line no 55: " + e.getMessage());
+		}
+		return premium1;
+		
+	}
+
+	private boolean updateLoanCounter(LifeInsurance lifeInsurance, Premiums premium) {
+		Long policyId = 0L;
+		boolean flag = false;
+		if(premium.isPremiumStatus()) {
+			lifeInsurance.setPremiumsPaid(lifeInsurance.getPremiumsPaid() + 1);
+			lifeInsurance.setPremiumsRemaining(lifeInsurance.getPolicyTerm()*12 - lifeInsurance.getPremiumsPaid());
+//			loanDetails.setEmiAmount(emi.getEmiAmount());
+//			loanDetails.setInterestPaid(loanDetails.getInterestPaid() == null ? new BigDecimal("0.00") : loanDetails.getInterestPaid().add(emi));
+			lifeInsurance.setModifiedBy("sunilkmr5775");
+			lifeInsurance.setModifiedDate(LocalDateTime.now());
+			policyId = lifeInsuranceRepository.save(lifeInsurance).getPolicyId();
+
+			if (policyId > 0)
+				flag= true;
+			else
+				flag= false;
+		} 
+		
+		return flag;
+	}
+
+	@Override
+	public Premiums updatePremium(Premiums premium) {
+		premium.setModifiedBy(premium.getCreatedBy());
+		premium.setModifiedDate(null);
+		return this.premiumRepository.save(premium);
+	}
+
+	@Override
+	public Set<Premiums> getPremiums() {
+		return new LinkedHashSet<>(this.premiumRepository.findAll());
+	}
+
+	@Override
+	public Premiums getPremium(Long premiumId) {
+		Premiums premium = this.premiumRepository.findAllById(premiumId);
+		return premium;
+	}
+
+	@Override
+	public void deletePremium(Long premiumId) {
+		this.premiumRepository.deleteById(premiumId);
+
+	}
+
+	@Override
+	public List<Premiums> getPremiumOfLifeInsurance(LifeInsurance lifeInsurance) {
+		// TODO Auto-generated method stub
+		return this.premiumRepository.findBylifeInsurance(lifeInsurance);
+	}
+
+}

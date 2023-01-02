@@ -13,12 +13,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.exam.model.Emi;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
+//@RequiredArgsConstructor
+@Getter
+@Setter
 public class LoanRequest  {
 
 	private static final long serialVersionUID = 1L;
@@ -41,7 +48,7 @@ public class LoanRequest  {
 	private BigDecimal interestPaid;
 	private String logoName;
 	
-	public String getLoanType() {
+/*	public String getLoanType() {
 		return loanType;
 	}
 	public void setLoanType(String loanType) {
@@ -145,7 +152,7 @@ public class LoanRequest  {
 	}
 	public void setLogoName(String logoName) {
 		this.logoName = logoName;
-	}
+	}*/
 
 	
 }
