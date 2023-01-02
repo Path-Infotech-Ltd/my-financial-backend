@@ -32,6 +32,9 @@ public class LifeInsurance {
 	@Column(name = "PLAN_NAME")
 	private String planName;
 
+	@Column(name = "POLICY_STATUS")
+	private String policyStatus;
+
 	@Column(name = "STATUS")
 	private boolean status;
 

@@ -24,7 +24,7 @@ public interface LifeInsuranceRepository extends JpaRepository<LifeInsurance, Lo
 //	Set<Loan> findByOrderByStatusAsc();
 //
 	@Query(value = "{call FilterLifeInsuranceRecord(:policyNo, :policyStatus, :bankName)}", nativeQuery = true)
-	public ArrayList<LifeInsurance> findAllLifeInsurancePoliciesProcedure(@Param("policyNo") String policyNo, @Param("policyStatus") boolean policyStatus, @Param("bankName") String bankName);
+	public ArrayList<LifeInsurance> findAllLifeInsuranceStoredProcedure(@Param("policyNo") String policyNo, @Param("policyStatus") String policyStatus, @Param("bankName") String bankName);
 //
 //	void deleteByLoanNo(Loan loan);
 //

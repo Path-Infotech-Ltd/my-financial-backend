@@ -29,6 +29,7 @@ public class LifeInsuranceRequest {
 	private Long premiumsPaid;
 	private Long premiumsRemaining;
 	private String nominee;
+	private String policyStatus;
 	private boolean status;
 
 	private String imgPath;

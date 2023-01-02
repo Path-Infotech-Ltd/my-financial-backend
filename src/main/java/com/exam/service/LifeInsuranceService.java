@@ -18,7 +18,7 @@ public interface LifeInsuranceService {
 
     void deletePolicy(Long policyId);
 
-    public List<LifeInsurance> findAllLifeInsurancePoliciesProcedure(String policyNo, boolean policyStatus, String bankName);
+    public List<LifeInsurance> findAllLifeInsurancePoliciesProcedure(String policyNo, String policyStatus, String bankName);
 
     public List<LifeInsurance> getAllActivePolicies();
 }

@@ -74,17 +74,20 @@ public class LifeInsuranceController {
 //
 //	 FILTER LIFE INSURANCE POLICY
 	@GetMapping("/filter-life-insurance-policy")
-	public List<LifeInsurance> getLoanRecordsByFiter(
+	public List<LifeInsurance> getPolicyRecordsByFiter(
 			@RequestParam(value = "policyNo", required = false) String policyNo,
-			@RequestParam(value = "policyStatus", required = false) boolean policyStatus,
+			@RequestParam(value = "policyStatus", required = false) String policyStatus,
 			@RequestParam(value = "bankName", required = false) String bankName) {
 
-//		if(policyNo.isEmpty()||policyNo==""||policyNo.equals("")) {
-//			policyNo=null;
-//		}
-//		if(bankName.isEmpty()||bankName==""||bankName.equals("")) {
-//			bankName=null;
-//		}
+		if(policyNo=="" || policyNo.equals("") || policyNo.equals("null")) {
+			policyNo=null;
+		}
+		if(policyStatus=="" || policyStatus.equals("") || policyStatus.equals("null")) {
+			policyStatus=null;
+		}
+		if(bankName=="" || bankName.equals("") || bankName.equals("null")) {
+			bankName=null;
+		}
 		return new ArrayList<>(this.lifeInsuranceService.findAllLifeInsurancePoliciesProcedure(policyNo, policyStatus, bankName));
 
 	}

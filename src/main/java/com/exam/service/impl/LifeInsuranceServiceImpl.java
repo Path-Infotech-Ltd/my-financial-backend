@@ -51,12 +51,15 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 			lifeInsurance.setPremiumPayingTerm(lifeInsuranceRequest.getPremiumPayingTerm());
 			lifeInsurance.setPremiumsPaid(lifeInsuranceRequest.getPremiumsPaid());
 			lifeInsurance.setPremiumsRemaining(lifeInsuranceRequest.getPremiumsRemaining());
+			lifeInsurance.setPolicyStatus(lifeInsuranceRequest.isStatus()==true?StatusConstant.STATUS_ACTIVE:StatusConstant.STATUS_INACTIVE);
+			lifeInsurance.setStatus(lifeInsurance.isStatus());
 			lifeInsurance.setImgPath(lifeInsuranceRequest.getImgPath());
-			lifeInsurance.setHtmlColor1(lifeInsuranceRequest.getHtmlColor1());
-			lifeInsurance.setHtmlColor2(lifeInsuranceRequest.getHtmlColor2());
-			lifeInsurance.setHexColor(lifeInsuranceRequest.getHexColor());
 
-			lifeInsurance.setStatus(lifeInsuranceRequest.isStatus());
+			lifeInsurance.setHtmlColor1("success");
+			lifeInsurance.setHtmlColor2("warning");
+			lifeInsurance.setHexColor("#E46651");
+
+			lifeInsurance.setStatus(true);
 			lifeInsurance.setCreatedBy("sunilkmr5775");
 			lifeInsurance.setCreatedDate(LocalDateTime.now());
 			lifeInsurance.setModifiedBy(null);
@@ -102,6 +105,7 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 	public void deletePolicy(Long policyId) {
 		LifeInsurance lifeInsurance = this.lifeInsuranceRepository.findById(policyId).get();
 		lifeInsurance.setStatus(false);
+		lifeInsurance.setPolicyStatus(StatusConstant.STATUS_CLOSED);
 		lifeInsurance.setModifiedBy("sunilkmr5775");
 		lifeInsurance.setModifiedDate(LocalDateTime.now());
 		this.lifeInsuranceRepository.save(lifeInsurance);
@@ -116,9 +120,9 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 
 //	Filter Policies
 	@Override
-	public List<LifeInsurance> findAllLifeInsurancePoliciesProcedure(String policyNo, boolean policyStatus, String bankName) {
+	public List<LifeInsurance> findAllLifeInsurancePoliciesProcedure(String policyNo, String policyStatus, String bankName) {
 
-		ArrayList<LifeInsurance> result = this.lifeInsuranceRepository.findAllLifeInsurancePoliciesProcedure(policyNo, policyStatus, bankName);
+		ArrayList<LifeInsurance> result = this.lifeInsuranceRepository.findAllLifeInsuranceStoredProcedure(policyNo, policyStatus, bankName);
 		return result;
 	}
 /*
