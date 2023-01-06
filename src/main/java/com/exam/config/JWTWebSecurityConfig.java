@@ -91,6 +91,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter implement
 			"/premium-modes/**",
 			"/fileController/**",
 			"/jobs/**"
+
 //			,"/current-user/"
 //			,"/category/"
 	};

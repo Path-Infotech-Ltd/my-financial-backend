@@ -22,5 +22,7 @@ public interface LifeInsuranceService {
 
     public List<LifeInsurance> getAllActivePolicies();
 
+
     LifeInsurance getPolicy(Long policyId);
+
 }

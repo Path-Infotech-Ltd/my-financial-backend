@@ -9,6 +9,7 @@ import com.exam.model.Loan;
 import com.exam.repository.LifeInsuranceRepository;
 import com.exam.service.LifeInsuranceService;
 import com.exam.util.CommonUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,9 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 		LifeInsurance lifeInsurance = new LifeInsurance();
 		Long policyId = 0L;
 		String bankId = lifeInsuranceRequest.getBank();
+
 		Long policyTermsInMonths = 0L;
+
 		try {
 
 			lifeInsurance.setPolicyNo(lifeInsuranceRequest.getPolicyNo());
@@ -64,6 +67,7 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 			}
 			lifeInsurance.setPremiumsPaid(0L);
 			lifeInsurance.setPremiumsRemaining(CommonUtil.convertPolicyTermInMonths(lifeInsurance.getDueDateMode(), lifeInsurance.getPolicyTerm()));
+
 			lifeInsurance.setPolicyStatus(lifeInsuranceRequest.isStatus()==true?StatusConstant.STATUS_ACTIVE:StatusConstant.STATUS_INACTIVE);
 			lifeInsurance.setStatus(lifeInsurance.isStatus());
 			lifeInsurance.setImgPath(lifeInsuranceRequest.getImgPath());
@@ -138,6 +142,7 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 	}
 
 	//	Filter Policies
+
 	@Override
 	public List<LifeInsurance> findAllLifeInsurancePoliciesProcedure(String policyNo, String policyStatus, String bankName) {
 

@@ -2,6 +2,7 @@ package com.exam.service.impl;
 
 import com.exam.constant.StatusConstant;
 import com.exam.model.LifeInsurance;
+
 import com.exam.model.Premiums;
 import com.exam.repository.LifeInsuranceRepository;
 import com.exam.repository.PremiumRepository;
@@ -37,6 +38,7 @@ public class PremiumServiceImpl implements PremiumService {
 			premium.setPremiumAmount(premium.getPremiumAmount());
 			premium.setPremiumDate(premium.getPremiumDate());
 			premium.setStatus(premium.isPremiumStatus() == true ? StatusConstant.STATUS_PAID : premium.isPremiumStatus() == false ? StatusConstant.STATUS_UNPAID.toString() : StatusConstant.STATUS_UNKNOWN);
+
 			premium.setPremiumStatus(premium.isPremiumStatus());
 			premium.setCreatedBy("sunilkumar5775");
 			premium.setCreatedDate(LocalDateTime.now());
@@ -49,6 +51,7 @@ public class PremiumServiceImpl implements PremiumService {
 				this.lifeInsuranceRepository.save(lifeInsurance);
 			}
 		  }
+
 		} catch (Exception e) {
 			System.out.println("Inside addPremium() in PremiumServiceImpl at line no 55: " + e.getMessage());
 		}
@@ -63,6 +66,7 @@ public class PremiumServiceImpl implements PremiumService {
 
 			lifeInsurance.setPremiumsPaid(lifeInsurance.getPremiumsPaid() + 1);
 			lifeInsurance.setPremiumsRemaining(lifeInsurance.getPremiumsRemaining()-1);
+
 //			loanDetails.setEmiAmount(emi.getEmiAmount());
 //			loanDetails.setInterestPaid(loanDetails.getInterestPaid() == null ? new BigDecimal("0.00") : loanDetails.getInterestPaid().add(emi));
 			lifeInsurance.setModifiedBy("sunilkmr5775");
