@@ -1,11 +1,13 @@
 package com.exam.controller;
 
+import com.exam.config.SystemInfo;
 import com.exam.dto.LifeInsuranceRequest;
 import com.exam.dto.LifeInsuranceResponse;
-import com.exam.dto.LoanResponse;
 import com.exam.model.LifeInsurance;
 import com.exam.service.LifeInsuranceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +23,23 @@ import java.util.List;
 @RequestMapping("/life-insurances")
 public class LifeInsuranceController {
 
+	@Value("${spring.datasource.url}")
+	private String datasource_url;
+
 	@Autowired
 	private LifeInsuranceService lifeInsuranceService;
+
+	@Autowired
+	private Environment env;
 
 //	 test api
 	@GetMapping("/testMsg")
 	public String testApi() {
-		return "This is a LifeInsurance Testing API";
+		String username = env.getProperty("spring.datasource.username");
+		SystemInfo si = new SystemInfo();
+		return si.memInfo();
+//		return "Username: "+username+" Datasource_Url: "+datasource_url;
+
 
 	}
 
@@ -100,12 +112,12 @@ public class LifeInsuranceController {
 //	 * loanNo) { this.loanService.deleteByLoanNo(loanNo); }
 //	 */
 //
-////	 GET LOAN BY ID
-//	@GetMapping("/{loanId}")
-//	public Loan getLoan(@PathVariable Long loanId) {
-//		return this.loanService.getLoan(loanId);
-//
-//	}
+//	 GET POLICY BY ID
+	@GetMapping("/{policyId}")
+	public LifeInsurance getPolicyById(@PathVariable Long policyId) {
+		return this.lifeInsuranceService.getPolicy(policyId);
+
+	}
 //
 ////	 GET ALL LOAN TYPES
 //	@GetMapping("/loanTypes")

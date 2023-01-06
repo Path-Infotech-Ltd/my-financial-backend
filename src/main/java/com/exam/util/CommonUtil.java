@@ -230,4 +230,23 @@ public class CommonUtil {
 	public static String getTimeStamp() {
 		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 	}
+
+	public static LocalDate convertStringToLocalDate(String date){
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");
+		LocalDate localDate = LocalDate.parse(date, formatter);
+		return localDate;
+	}
+
+	public static Long convertPolicyTermInMonths(String dueDateMode, Long policyTerm){
+		if(dueDateMode.equals("3")){
+			policyTerm = policyTerm * 12;
+		}
+		else if(dueDateMode.equals("5")){
+			policyTerm = policyTerm * 2;
+		}
+		else {
+			return 	policyTerm ;
+		}
+		return policyTerm;
+	}
 }
