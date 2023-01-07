@@ -1,17 +1,16 @@
 package com.exam.service.impl;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
+import com.exam.constant.ExceptionConstant;
+import com.exam.constant.JobConstant;
+import com.exam.constant.StatusConstant;
+import com.exam.dto.FileRequest;
+import com.exam.dto.FileResponse;
+import com.exam.exception.FileUploadException;
+import com.exam.model.*;
+import com.exam.repository.*;
+import com.exam.service.FileService;
+import com.exam.util.CommonUtil;
+import com.exam.util.FileUtil;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,25 +18,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.exam.constant.ExceptionConstant;
-import com.exam.constant.JobConstant;
-import com.exam.constant.StatusConstant;
-import com.exam.dto.FileRequest;
-import com.exam.dto.FileResponse;
-import com.exam.exception.FileUploadException;
-import com.exam.model.Category;
-import com.exam.model.FileLog;
-import com.exam.model.FileUploadDetails;
-import com.exam.model.JobMaster;
-import com.exam.model.Quiz;
-import com.exam.repository.CategoryRepository;
-import com.exam.repository.FileLogRepository;
-import com.exam.repository.FileUploadDetailsRepository;
-import com.exam.repository.JobMasterRepository;
-import com.exam.repository.QuizRepository;
-import com.exam.service.FileService;
-import com.exam.util.CommonUtil;
-import com.exam.util.FileUtil;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -61,6 +54,12 @@ public class FileServiceImpl implements FileService {
 
 	@Autowired
 	private FileUtil fileUtil;
+
+	@Autowired
+	LifeInsuranceRepository lifeInsuranceRepository;
+
+	@Autowired
+	PremiumRepository premiumRepository;
 
 	@SuppressWarnings("unused")
 	@Override
@@ -289,9 +288,9 @@ public class FileServiceImpl implements FileService {
 		try {
 			List<String> list = Arrays.asList(record.split(","));
 			System.out.println("Line number: " + list.get(0));
+			String message = "Uploaded successfully";
 			switch (fileType) {
 			case JobConstant.BULK_UPLOAD_CATEGORIES:
-
 				Category category = new Category();
 				category.setTitle(list.get(1));
 				category.setDescription(list.get(2));
@@ -299,7 +298,7 @@ public class FileServiceImpl implements FileService {
 				category.setCreatedDate(LocalDateTime.now());
 
 				categoryRepository.save(category);
-				fileResponse = updateFileUplDtls(record, finalFileName, fileType, fileLogId, list.get(0), userName);
+				fileResponse = updateFileUplDtls(record, finalFileName, fileType, fileLogId, list.get(0), userName, StatusConstant.STATUS_SUCCESS,message);
 				break;
 
 			case JobConstant.BULK_UPLOAD_QUIZZES:
@@ -328,9 +327,51 @@ public class FileServiceImpl implements FileService {
 				quiz.setCreatedDate(LocalDateTime.now());
 
 				quizRepository.save(quiz);
-
-				fileResponse = updateFileUplDtls(record, finalFileName, fileType, fileLogId, list.get(0), userName);
+				fileResponse = updateFileUplDtls(record, finalFileName, fileType, fileLogId, list.get(0), userName, StatusConstant.STATUS_SUCCESS, message);
 				break;
+
+				case JobConstant.BULK_UPLOAD_POLICY_PREMIUM:
+
+					LifeInsurance lifeInsurance = new LifeInsurance();
+					Premiums premium = new Premiums();
+					boolean isLoanDetailsUpdated = false;
+
+					try {
+						String policyNo=list.get(1).trim();
+						BigDecimal premiumAmount= new BigDecimal(list.get(2).trim());
+						String policyStatus=list.get(3).toUpperCase().trim();
+						String premiumDate= list.get(4).trim();
+						lifeInsurance = lifeInsuranceRepository.findByPolicyNo(policyNo);
+						isLoanDetailsUpdated = updatePolicyCounter(lifeInsurance, true);
+						if(isLoanDetailsUpdated) {
+							premium.setLifeInsurance(lifeInsurance);
+							premium.setPremiumAmount(premiumAmount);
+							premium.setPolicyNo(policyNo);
+							premium.setPremiumDate(LocalDate.parse(premiumDate));
+							premium.setStatus(policyStatus);
+							premium.setPremiumStatus(true);
+							premium.setSumAssured(lifeInsurance.getSumAssured());
+							premium.setCreatedBy("sunilkumar5775");
+							premium.setCreatedDate(LocalDateTime.now());
+							premium.setNoOfPayment(lifeInsurance.getPremiumsPaid());
+
+							this.premiumRepository.save(premium);
+							if(CommonUtil.convertPolicyTermInMonths(lifeInsurance.getDueDateMode(), lifeInsurance.getPolicyTerm())==premium.getNoOfPayment()) {
+								lifeInsurance.setStatus(false);
+								lifeInsurance.setPolicyStatus(StatusConstant.STATUS_CLOSED);
+								this.lifeInsuranceRepository.save(lifeInsurance);
+							}
+					    }
+					} catch (Exception e) {
+						message = e.getMessage();
+						fileResponse = updateFileUplDtls(record, finalFileName, fileType, fileLogId, list.get(0), userName, StatusConstant.STATUS_FAILURE, message);
+						System.out.println("Inside addPremium() in PremiumServiceImpl at line no 55: " + e.getMessage());
+//						break;
+					}
+					fileResponse = updateFileUplDtls(record, finalFileName, fileType, fileLogId, list.get(0), userName, StatusConstant.STATUS_SUCCESS, "");
+					break;
+
+				default:System.out.println("Default case");
 			}
 
 			
@@ -345,7 +386,7 @@ public class FileServiceImpl implements FileService {
 	}
 
 	private FileResponse updateFileUplDtls(String record, String finalFileName, String fileType, Long fileLogId,
-			String sno, String userName) {
+			String sno, String userName, String status, String message) {
 
 		FileResponse fileResponse = new FileResponse();
 		FileLog fileLog = fileLogRepository.findById(fileLogId).get();
@@ -360,7 +401,9 @@ public class FileServiceImpl implements FileService {
 		fileUploadDetails.setFileLogId(fileLogDetails);
 		fileUploadDetails.setsNo(sno);
 		fileUploadDetails.setRecord(record);
-		fileUploadDetails.setStatus(StatusConstant.STATUS_SUCCESS);
+		fileUploadDetails.setStatus(status);
+		fileUploadDetails.setErrorCode(status.equalsIgnoreCase(StatusConstant.STATUS_SUCCESS)?"200":"101");
+		fileUploadDetails.setErrorDesc(message);
 		fileUploadDetails.setCreatedBy(userName);
 		fileUploadDetails.setCreatedDate(LocalDateTime.now());
 		fileUploadDetailsRepository.save(fileUploadDetails);
@@ -393,5 +436,25 @@ public class FileServiceImpl implements FileService {
 		
 		return fileRes;
 	}
-	
+
+	public boolean updatePolicyCounter(LifeInsurance lifeInsurance, boolean premiumStatus) {
+		Long policyId = 0L;
+		boolean flag = false;
+		Long policyTermsInMonths=0L;
+		if(premiumStatus) {
+			lifeInsurance.setPremiumsPaid(lifeInsurance.getPremiumsPaid() + 1);
+			lifeInsurance.setPremiumsRemaining(lifeInsurance.getPremiumsRemaining()-1);
+//			loanDetails.setInterestPaid(loanDetails.getInterestPaid() == null ? new BigDecimal("0.00") : loanDetails.getInterestPaid().add(emi));
+			lifeInsurance.setModifiedBy("sunilkmr5775");
+			lifeInsurance.setModifiedDate(LocalDateTime.now());
+			policyId = lifeInsuranceRepository.save(lifeInsurance).getPolicyId();
+
+			if (policyId > 0)
+				flag= true;
+			else
+				flag= false;
+		}
+
+		return flag;
+	}
 }

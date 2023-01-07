@@ -5,8 +5,11 @@ import com.exam.constant.StatusConstant;
 import com.exam.dto.LifeInsuranceRequest;
 import com.exam.dto.LifeInsuranceResponse;
 import com.exam.model.LifeInsurance;
+import com.exam.model.Loan;
 import com.exam.repository.LifeInsuranceRepository;
 import com.exam.service.LifeInsuranceService;
+import com.exam.util.CommonUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,8 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 		Long policyId = 0L;
 		String bankId = lifeInsuranceRequest.getBank();
 
+		Long policyTermsInMonths = 0L;
+
 		try {
 
 			lifeInsurance.setPolicyNo(lifeInsuranceRequest.getPolicyNo());
@@ -49,8 +54,20 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 			lifeInsurance.setNominee(lifeInsuranceRequest.getNominee());
 			lifeInsurance.setPolicyTerm(lifeInsuranceRequest.getPolicyTerm());
 			lifeInsurance.setPremiumPayingTerm(lifeInsuranceRequest.getPremiumPayingTerm());
-			lifeInsurance.setPremiumsPaid(lifeInsuranceRequest.getPremiumsPaid());
-			lifeInsurance.setPremiumsRemaining(lifeInsuranceRequest.getPremiumsRemaining());
+
+
+			if(lifeInsurance.getDueDateMode().equals("3")){
+				policyTermsInMonths = lifeInsurance.getPolicyTerm()*12;
+			}
+			else if(lifeInsurance.getDueDateMode().equals("5")){
+				policyTermsInMonths = lifeInsurance.getPolicyTerm()*2;
+			}
+			else {
+				policyTermsInMonths = lifeInsurance.getPolicyTerm();
+			}
+			lifeInsurance.setPremiumsPaid(0L);
+			lifeInsurance.setPremiumsRemaining(CommonUtil.convertPolicyTermInMonths(lifeInsurance.getDueDateMode(), lifeInsurance.getPolicyTerm()));
+
 			lifeInsurance.setPolicyStatus(lifeInsuranceRequest.isStatus()==true?StatusConstant.STATUS_ACTIVE:StatusConstant.STATUS_INACTIVE);
 			lifeInsurance.setStatus(lifeInsurance.isStatus());
 			lifeInsurance.setImgPath(lifeInsuranceRequest.getImgPath());
@@ -118,7 +135,14 @@ public class LifeInsuranceServiceImpl implements LifeInsuranceService {
 		return new ArrayList<>(this.lifeInsuranceRepository.findAllByStatus(true));
 	}
 
-//	Filter Policies
+	@Override
+	public LifeInsurance getPolicy(Long policyId) {
+		LifeInsurance lifeInsurance = this.lifeInsuranceRepository.findById(policyId).get();
+			return lifeInsurance;
+	}
+
+	//	Filter Policies
+
 	@Override
 	public List<LifeInsurance> findAllLifeInsurancePoliciesProcedure(String policyNo, String policyStatus, String bankName) {
 

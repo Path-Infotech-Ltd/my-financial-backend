@@ -21,4 +21,8 @@ public interface LifeInsuranceService {
     public List<LifeInsurance> findAllLifeInsurancePoliciesProcedure(String policyNo, String policyStatus, String bankName);
 
     public List<LifeInsurance> getAllActivePolicies();
+
+
+    LifeInsurance getPolicy(Long policyId);
+
 }
